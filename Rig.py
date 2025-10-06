@@ -1,8 +1,8 @@
 """
 File: Rig.py
 Description: <A brief description of this Python module.>
-Author: <full name>
-ID: <student_id>
-Username: <username>
+Author: Jozef Jones
+ID: JONJY036
+Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
