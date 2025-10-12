@@ -25,6 +25,15 @@ class Rig:
         self.__storage.append(data_spike2)
         self.__storage.append(removable_drive)
 
+    def __str__(self):
+        return (
+            f'Name: {self.__name}\n'
+            f'Damage: {self.__damage}\n'
+            f'Broken: {self.__broken}\n'
+            f'Storage: {self.__storage}\n'
+            f'Upgrade level: {self.__upgrade_level}\n'
+        )
+
     # Define Getters
     def get_name(self):
         return self.__name

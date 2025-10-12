@@ -20,6 +20,14 @@ class Hacker:
 
         self.__inventory.append(crypto_token)
 
+    def __str__(self):
+        return (
+            f'Hacker: {self.__name}'
+            f'Rig: {self.__rig.name}'
+            f'Trace level: {self.__trace_level}'
+            f'Inventory: {self.__inventory}'
+        )
+
     # Define Getters
     def get_name(self):
         return self.__name
