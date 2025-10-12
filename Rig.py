@@ -7,6 +7,7 @@ Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 from Asset import Asset
+import random
 
 # Define class, __init__ and __str__
 class Rig:
@@ -57,3 +58,14 @@ class Rig:
         self.__upgrade_level = upgrade_level
 
     # Define Methods
+    def repair_rig(self):
+        # TBC
+
+    def upgrade_rig(self):
+        # TBC
+
+    def generate_asset(self):
+        # TBC
+
+    def check_condition(self):
+        # TBC
