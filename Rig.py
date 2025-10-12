@@ -7,11 +7,34 @@ Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 # Define class, __init__ and __str__
+class Rig:
+    def __init__(self, name: str):
+        self.__name = name
+        self.__damage = 0
+        self.__broken = False
+        self.__storage = []
+        self.__upgrade_level = 0
 
 # Define Getters
+    def get_name(self):
+        return self.__name
+    def get_damage(self):
+        return self.__damage
+    def get_broken(self):
+        return self.__broken
+    def get_storage(self):
+        return self.__storage
+    def get_upgrade_level(self):
+        return self.__upgrade_level
 
 # Define Setters
-
-# Define Attributes
+    def set_damage(self, damage):
+        self.__damage = damage
+    def set_broken(self, broken):
+        self.__broken = broken
+    def set_storage(self, storage):
+        self.__storage = storage
+    def set_upgrade_level(self, upgrade_level):
+        self.__upgrade_level = upgrade_level
 
 # Define Methods
