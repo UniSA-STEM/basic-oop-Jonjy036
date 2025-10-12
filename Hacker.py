@@ -11,23 +11,28 @@ class Hacker:
     def __init__(self, name: str):
         self.__name = name
         self.__inventory = []
+        self.__crypto_token = 1
         self.__rig = None
         self.__trace_level = 0
 
 # Define Getters
-    def get_name(self) -> str:
+    def get_name(self):
         return self.__name
-    def get_inventory(self) -> list:
+    def get_inventory(self):
         return self.__inventory
-    def get_rig(self) -> list:
+    def get_crypto_token(self):
+        return self.__crypto_token
+    def get_rig(self):
         return self.__rig
-    def get_trace_level(self) -> int:
+    def get_trace_level(self):
         return self.__trace_level
 
 # Define Setters
+    def set_crypto_token(self, crypto_token: int):
+        self.__crypto_token = crypto_token
     def set_rig(self, rig):
         self.__rig = rig
-    def set_trace_level(self, trace_level):
+    def set_trace_level(self, trace_level: int):
         self.__trace_level = trace_level
 
 # Define Methods
