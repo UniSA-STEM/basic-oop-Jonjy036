@@ -84,12 +84,54 @@ class Hacker:
             print('you have no crypto tokens. You cannot purchase a rig!')
 
 
-    #def launch_data_spike(self, target):
-        # TBC
+    def find_target(self):
+        print('Available Hackers to attack are:')
+        for hacker in Hacker.hacker_list:
+            if hacker != self:
+                print(hacker.get_name())
 
-    #@classmethod
-    #def find_target(cls):
-        # TBC
+    def launch_data_spike(self):
+        if self.get_rig() is None:
+            print('You have no rig to launch an attack')
+            return
+
+        data_spikes = []
+        for asset in self.get_rig().get_storage():
+            if asset.get_name().startswith('Data Spike'):
+                data_spikes.append(asset)
+
+        if not data_spikes:
+            print('You have no data spikes in the rig storage')
+            return
+        else:
+            print(f'You have {len(data_spikes)} data spikes in the rig storage')
+
+        target_name = input('Enter a target name to launch Data Spike attack at: ')
+
+        target_hacker = None
+        for hacker in Hacker.hacker_list:
+            if hacker.get_name() == target_name and hacker != self:
+                target_hacker = hacker
+
+        if target_hacker:
+            data_spike_for_attack = data_spikes[0]
+            print(f'Launching Data Spike attack against{target_hacker.get_name()}')
+            self.__rig.get_storage().remove(data_spike_for_attack)
+
+            target_rig = target_hacker.get_rig()
+            if target_rig is None:
+                print(f'{target_hacker.get_name()} has no rig!! you wasted a Data Spike!!!!')
+            else:
+                spike_damage = 1
+                new_damage = target_rig.get_damage() + spike_damage
+                target_rig.set_damage(new_damage)
+                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
+
+                if new_damage >= 10:
+                    target_rig.set_broken(True)
+                    print(f'{target_hacker.get_name()} now has a broken rig!!!')
+        else:
+            print(f' there is no hacker by the name of {target_name}')
 
     #def extract_unsecured_assets(self, rig):
         # TBC
