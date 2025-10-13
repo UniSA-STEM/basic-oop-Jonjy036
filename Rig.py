@@ -67,14 +67,14 @@ class Rig:
         self.__upgrade_level = upgrade_level
 
     # Define Methods
-    def repair_rig(self):
+    #def repair_rig(self):
         # TBC
 
-    def upgrade_rig(self):
+    #def upgrade_rig(self):
         # TBC
 
-    def generate_asset(self):
+    #def generate_asset(self):
         # TBC
 
-    def check_condition(self):
+    #def check_condition(self):
         # TBC

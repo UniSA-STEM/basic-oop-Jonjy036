@@ -10,6 +10,9 @@ from Asset import Asset
 
 import random
 
+from Rig import Rig
+
+
 # Define class, __init__ and __str__
 class Hacker:
     hacker_list = []
@@ -28,7 +31,7 @@ class Hacker:
         if self.__rig is None:
             rig_name = 'No Rig'
         else:
-            rig_name = self.__rig.name
+            rig_name = self.__rig.get_name()
 
         if len(self.__inventory) == 0:
             inv_string = 'EMPTY'
@@ -62,8 +65,24 @@ class Hacker:
         self.__trace_level = trace_level
 
     # Define Methods
-    #def aquire_rig(self):
-        # TBC
+    def aquire_rig(self):
+        token_in_inventory = False
+        asset_to_remove = None
+
+        for asset in self.__inventory:
+            if asset.get_name().startswith('Crypto Token'):
+                token_in_inventory = True
+                asset_to_remove = asset
+
+        if token_in_inventory:
+            rig_name = input('Enter a name for your new Rig: ')
+            new_rig = Rig(rig_name)
+            self.set_rig(new_rig)
+            self.__inventory.remove(asset_to_remove)
+            print(f'You now own a Rig! The rig is called: {rig_name}')
+        else:
+            print('you have no crypto tokens. You cannot purchase a rig!')
+
 
     #def launch_data_spike(self, target):
         # TBC
