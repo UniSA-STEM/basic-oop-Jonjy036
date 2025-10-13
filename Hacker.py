@@ -30,12 +30,12 @@ class Hacker:
         else:
             rig_name = self.__rig.name
 
-        if len(self.__inventory) > 0:
+        if len(self.__inventory) == 0:
             inv_string = 'EMPTY'
         else:
             inv_items = []
             for asset in self.__inventory:
-                inv_items.append(str(asset))
+                inv_items.append(asset.get_name())
             inv_string = ', '.join(inv_items)
 
         return (

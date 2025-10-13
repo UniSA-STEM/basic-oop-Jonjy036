@@ -27,11 +27,20 @@ class Rig:
         self.__storage.append(removable_drive)
 
     def __str__(self):
+
+        if len(self.__storage) == 0:
+            store_string = 'EMPTY'
+        else:
+            store_items = []
+            for asset in self.__storage:
+                store_items.append(asset.get_name())
+            store_string = ', '.join(store_items)
+
         return (
             f'Name: {self.__name}\n'
             f'Damage: {self.__damage}\n'
             f'Broken: {self.__broken}\n'
-            f'Storage: {self.__storage}\n'
+            f'Storage: {store_string}\n'
             f'Upgrade level: {self.__upgrade_level}\n'
         )
 
