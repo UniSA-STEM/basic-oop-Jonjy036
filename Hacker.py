@@ -7,12 +7,12 @@ Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 from Asset import Asset
+
 import random
 
 # Define class, __init__ and __str__
 class Hacker:
     hacker_list = []
-
     def __init__(self, name: str):
         self.__name = name
         self.__inventory = []
@@ -25,11 +25,24 @@ class Hacker:
         self.__inventory.append(crypto_token)
 
     def __str__(self):
+        if self.__rig is None:
+            rig_name = 'No Rig'
+        else:
+            rig_name = self.__rig.name
+
+        if len(self.__inventory) > 0:
+            inv_string = 'EMPTY'
+        else:
+            inv_items = []
+            for asset in self.__inventory:
+                inv_items.append(str(asset))
+            inv_string = ', '.join(inv_items)
+
         return (
-            f'Hacker: {self.__name}'
-            f'Rig: {self.__rig.name}'
-            f'Trace level: {self.__trace_level}'
-            f'Inventory: {self.__inventory}'
+            f'Hacker: {self.__name}\n'
+            f'Rig: {rig_name}\n'
+            f'Trace level: {self.__trace_level}\n'
+            f'Inventory: {inv_string}\n'
         )
 
     # Define Getters
@@ -49,34 +62,34 @@ class Hacker:
         self.__trace_level = trace_level
 
     # Define Methods
-    def aquire_rig(self):
+    #def aquire_rig(self):
         # TBC
 
-    def launch_data_spike(self, target):
+    #def launch_data_spike(self, target):
         # TBC
 
-    @classmethod
-    def find_target(cls):
+    #@classmethod
+    #def find_target(cls):
         # TBC
 
-    def extract_unsecured_assets(self, rig):
+    #def extract_unsecured_assets(self, rig):
         # TBC
 
-    def encrypt_asset(self):
+    #def encrypt_asset(self):
         # TBC
 
-    def decrypt_asset(self):
+    #def decrypt_asset(self):
         # TBC
 
-    def upgrade_rig(self):
+    #def upgrade_rig(self):
         # TBC
 
-    def scan_inventory(self):
+    #def scan_inventory(self):
         # TBC
 
-    def store_asset(self, rig_name, asset):
+    #def store_asset(self, rig_name, asset):
         # TBC
 
-    def retrieve_asset(self, rig_name, asset):
+    #def retrieve_asset(self, rig_name, asset):
         # TBC
 
