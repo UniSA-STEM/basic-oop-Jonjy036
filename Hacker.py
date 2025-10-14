@@ -64,16 +64,18 @@ class Hacker:
     def set_trace_level(self, trace_level: int):
         self.__trace_level = trace_level
 
-    # Define Methods
+    # Allows the hacker to purchase a rig at the expense of 1 crypto token.
     def aquire_rig(self):
         token_in_inventory = False
         asset_to_remove = None
 
+        # Search for any assets in inventory with 'Crypto Token' in teh name.
         for asset in self.__inventory:
             if asset.get_name().startswith('Crypto Token'):
                 token_in_inventory = True
                 asset_to_remove = asset
 
+        # If token found, name the rig and remove token. Otherwise print error message
         if token_in_inventory:
             rig_name = input('Enter a name for your new Rig: ')
             new_rig = Rig(rig_name)
@@ -83,41 +85,49 @@ class Hacker:
         else:
             print('you have no crypto tokens. You cannot purchase a rig!')
 
-
+    # Idnetify any other active hackers.
     def find_target(self):
         print('Available Hackers to attack are:')
         for hacker in Hacker.hacker_list:
             if hacker != self:
                 print(hacker.get_name())
 
+    # Launch data Spike attack.
     def launch_data_spike(self):
+        # Validate that a rig is present.
         if self.get_rig() is None:
             print('You have no rig to launch an attack')
             return
 
+        # Search rig storage for data spikes.
         data_spikes = []
         for asset in self.get_rig().get_storage():
             if asset.get_name().startswith('Data Spike'):
                 data_spikes.append(asset)
 
+        # Display message showing number (or absence) of data spikes.
         if not data_spikes:
             print('You have no data spikes in the rig storage')
             return
         else:
             print(f'You have {len(data_spikes)} data spikes in the rig storage')
 
+        # Request target name.
         target_name = input('Enter a target name to launch Data Spike attack at: ')
 
+        # Validation of target input.
         target_hacker = None
         for hacker in Hacker.hacker_list:
             if hacker.get_name() == target_name and hacker != self:
                 target_hacker = hacker
 
+        # if target exists, launch attack and remove data spike.
         if target_hacker:
             data_spike_for_attack = data_spikes[0]
             print(f'Launching Data Spike attack against{target_hacker.get_name()}')
             self.__rig.get_storage().remove(data_spike_for_attack)
 
+            # If target has no rig display message. If rig does exist, apply damage.
             target_rig = target_hacker.get_rig()
             if target_rig is None:
                 print(f'{target_hacker.get_name()} has no rig!! you wasted a Data Spike!!!!')
@@ -127,9 +137,12 @@ class Hacker:
                 target_rig.set_damage(new_damage)
                 print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
 
+                # check to see if rig is 'broken'
                 if new_damage >= 10:
                     target_rig.set_broken(True)
                     print(f'{target_hacker.get_name()} now has a broken rig!!!')
+
+        # If no target exists by nthe input name display message.
         else:
             print(f' there is no hacker by the name of {target_name}')
 
