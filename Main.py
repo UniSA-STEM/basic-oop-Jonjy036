@@ -12,11 +12,15 @@ from Hacker import Hacker
 
 # Basic early checks on Hacker Instantiation, aquire_rig,
 # find_target and launch_data_spike methods.
+
 hacker1 = Hacker('Joe')
 print(str(hacker1))
 
 hacker2 = Hacker('JONJY036')
+print(str(hacker2))
+
 hacker3 = Hacker('JOEYCEZROO')
+print(str(hacker3))
 
 hacker1.aquire_rig()
 hacker2.aquire_rig()
@@ -27,3 +31,7 @@ hacker2.find_target()
 hacker3.find_target()
 
 hacker1.launch_data_spike()
+
+hacker2.launch_data_spike()
+
+
