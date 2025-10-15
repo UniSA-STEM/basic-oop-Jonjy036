@@ -16,22 +16,19 @@ from Hacker import Hacker
 hacker1 = Hacker('Joe')
 print(str(hacker1))
 
-hacker2 = Hacker('JONJY036')
+hacker2 = Hacker('j')
 print(str(hacker2))
-
-hacker3 = Hacker('JOEYCEZROO')
-print(str(hacker3))
 
 hacker1.aquire_rig()
 hacker2.aquire_rig()
-hacker3.aquire_rig()
 
 hacker1.find_target()
 hacker2.find_target()
-hacker3.find_target()
 
 hacker1.launch_data_spike()
+hacker1.launch_data_spike()
+hacker1.launch_data_spike()
 
-hacker2.launch_data_spike()
-
+print(str(hacker1))
+print(hacker1.get_rig())
 
