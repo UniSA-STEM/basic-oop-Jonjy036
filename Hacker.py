@@ -16,6 +16,7 @@ from Rig import Rig
 # Define class, __init__ and __str__
 class Hacker:
     hacker_list = []
+
     def __init__(self, name: str):
         self.__name = name
         self.__inventory = []
@@ -42,7 +43,7 @@ class Hacker:
             inv_string = ', '.join(inv_items)
 
         return (
-            f'Hacker: {self.__name}\n'
+            f'\nHacker: {self.__name}\n'
             f'Rig: {rig_name}\n'
             f'Trace level: {self.__trace_level}\n'
             f'Inventory: {inv_string}\n'
@@ -51,16 +52,20 @@ class Hacker:
     # Define Getters
     def get_name(self):
         return self.__name
+
     def get_inventory(self):
         return self.__inventory
+
     def get_rig(self):
         return self.__rig
+
     def get_trace_level(self):
         return self.__trace_level
 
     # Define Setters
     def set_rig(self, rig):
         self.__rig = rig
+
     def set_trace_level(self, trace_level: int):
         self.__trace_level = trace_level
 
@@ -69,34 +74,36 @@ class Hacker:
         token_in_inventory = False
         asset_to_remove = None
 
-        # Search for any assets in inventory with 'Crypto Token' in teh name.
+        # Search for any assets in inventory with 'Crypto Token' in the name.
         for asset in self.__inventory:
             if asset.get_name().startswith('Crypto Token'):
                 token_in_inventory = True
                 asset_to_remove = asset
 
-        # If token found, name the rig and remove token. Otherwise print error message
+        # If token found, name the rig and remove token, otherwise print error message
         if token_in_inventory:
             rig_name = input('Enter a name for your new Rig: ')
             new_rig = Rig(rig_name)
             self.set_rig(new_rig)
             self.__inventory.remove(asset_to_remove)
-            print(f'You now own a Rig! The rig is called: {rig_name}')
+            print(f'You now own a Rig! The rig is called: {rig_name}\n')
         else:
-            print('you have no crypto tokens. You cannot purchase a rig!')
+            print('you have no crypto tokens. You cannot purchase a rig!\n')
 
-    # Idnetify any other active hackers.
+    # Identify any other active hackers.
     def find_target(self):
         print('Available Hackers to attack are:')
         for hacker in Hacker.hacker_list:
             if hacker != self:
                 print(hacker.get_name())
+        print('-------\n')
 
     # Launch data Spike attack.
     def launch_data_spike(self):
         # Validate that a rig is present.
         if self.get_rig() is None:
             print('You have no rig to launch an attack')
+            print('-------\n')
             return
 
         # Search rig storage for data spikes.
@@ -108,12 +115,14 @@ class Hacker:
         # Display message showing number (or absence) of data spikes.
         if not data_spikes:
             print('You have no data spikes in the rig storage')
+            print('-------\n')
             return
         else:
             print(f'You have {len(data_spikes)} data spikes in the rig storage')
+            print('-------\n')
 
         # Request target name.
-        target_name = input('Enter a target name to launch Data Spike attack at: ')
+        target_name = input('Enter a target name to launch Data Spike attack at: \n')
 
         # Validation of target input.
         target_hacker = None
@@ -124,7 +133,7 @@ class Hacker:
         # if target exists, launch attack and remove data spike.
         if target_hacker:
             data_spike_for_attack = data_spikes[0]
-            print(f'Launching Data Spike attack against{target_hacker.get_name()}')
+            print(f'Launching Data Spike attack against{target_hacker.get_name()}\n')
             self.__rig.get_storage().remove(data_spike_for_attack)
 
             # If target has no rig display message. If rig does exist, apply damage.
@@ -135,35 +144,48 @@ class Hacker:
                 spike_damage = 1
                 new_damage = target_rig.get_damage() + spike_damage
                 target_rig.set_damage(new_damage)
-                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
+                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.\n')
+                print('-------\n')
 
                 # check to see if rig is 'broken'
-                if new_damage >= 10:
+                if new_damage >= 2:
                     target_rig.set_broken(True)
                     print(f'{target_hacker.get_name()} now has a broken rig!!!')
+                    print('*******\n')
 
-        # If no target exists by nthe input name display message.
+        # If no target exists by the input name display message.
         else:
-            print(f' there is no hacker by the name of {target_name}')
+            print(f' there is no hacker by the name of {target_name}\n')
 
-    #def extract_unsecured_assets(self, rig):
-        # TBC
+    def extract_unsecured_assets(self, broken_rig):
+        if not broken_rig.get_broken():
+            print('This rig is not broken. You cannot extract assets!!')
+            return
 
-    #def encrypt_asset(self):
-        # TBC
+        unsecured_assets = []
+        for asset in broken_rig.get_storage():
+            if not asset.get_encrypted():
+                unsecured_assets.append(asset)
 
-    #def decrypt_asset(self):
-        # TBC
+        if len(unsecured_assets) > 0:
+            for asset in unsecured_assets:
+                broken_rig.get_storage().remove(asset)
+                self.get_rig().get_storage().append(asset)
+            print(f'\n{self.get_name()}, You have successfully extracted {len(unsecured_assets)}!!\n')
 
-    #def upgrade_rig(self):
-        # TBC
+    def encrypt_asset(self):
 
-    #def scan_inventory(self):
-        # TBC
+# def decrypt_asset(self):
+# TBC
 
-    #def store_asset(self, rig_name, asset):
-        # TBC
+# def upgrade_rig(self):
+# TBC
 
-    #def retrieve_asset(self, rig_name, asset):
-        # TBC
+# def scan_inventory(self):
+# TBC
 
+# def store_asset(self, rig_name, asset):
+# TBC
+
+# def retrieve_asset(self, rig_name, asset):
+# TBC
