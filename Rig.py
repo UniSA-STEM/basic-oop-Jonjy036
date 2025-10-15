@@ -37,6 +37,7 @@ class Rig:
             store_string = ', '.join(store_items)
 
         return (
+            f'*** Rig Info ***\n'
             f'Name: {self.__name}\n'
             f'Damage: {self.__damage}\n'
             f'Broken: {self.__broken}\n'
