@@ -43,7 +43,8 @@ class Hacker:
             inv_string = ', '.join(inv_items)
 
         return (
-            f'\nHacker: {self.__name}\n'
+            f'\n*** Hacker Info ***\n'
+            f'Hacker: {self.__name}\n'
             f'Rig: {rig_name}\n'
             f'Trace level: {self.__trace_level}\n'
             f'Inventory: {inv_string}\n'
@@ -115,6 +116,7 @@ class Hacker:
         # Display message showing number (or absence) of data spikes.
         if not data_spikes:
             print('You have no data spikes in the rig storage')
+            print('You cannot launch an attack')
             print('-------\n')
             return
         else:
@@ -133,7 +135,7 @@ class Hacker:
         # if target exists, launch attack and remove data spike.
         if target_hacker:
             data_spike_for_attack = data_spikes[0]
-            print(f'Launching Data Spike attack against{target_hacker.get_name()}\n')
+            print(f'Launching Data Spike attack against {target_hacker.get_name()}\n')
             self.__rig.get_storage().remove(data_spike_for_attack)
 
             # If target has no rig display message. If rig does exist, apply damage.
@@ -144,7 +146,7 @@ class Hacker:
                 spike_damage = 1
                 new_damage = target_rig.get_damage() + spike_damage
                 target_rig.set_damage(new_damage)
-                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.\n')
+                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
                 print('-------\n')
 
                 # check to see if rig is 'broken'
@@ -152,6 +154,8 @@ class Hacker:
                     target_rig.set_broken(True)
                     print(f'{target_hacker.get_name()} now has a broken rig!!!')
                     print('*******\n')
+
+                    self.extract_unsecured_assets(target_rig)
 
         # If no target exists by the input name display message.
         else:
@@ -161,6 +165,24 @@ class Hacker:
         if not broken_rig.get_broken():
             print('This rig is not broken. You cannot extract assets!!')
             return
+
+        # Search rig storage for removable drive.
+        removable_drives = []
+        for asset in self.get_rig().get_storage():
+            if asset.get_name().startswith('Removable Drive'):
+                removable_drives.append(asset)
+
+        if not removable_drives:
+            print('You have no removable drives in the rig storage')
+            print('-------\n')
+            return
+        else:
+            print(f'You have {len(removable_drives)} removable drives in the rig storage')
+            print('-------\n')
+
+        print('COMMENCING ATTACK!!!')
+        print('-------')
+        print('-------')
 
         unsecured_assets = []
         for asset in broken_rig.get_storage():
@@ -172,8 +194,10 @@ class Hacker:
                 broken_rig.get_storage().remove(asset)
                 self.get_rig().get_storage().append(asset)
             print(f'\n{self.get_name()}, You have successfully extracted {len(unsecured_assets)}!!\n')
+        else:
+            print('There were no unsecured assets. You leave with nothing!')
 
-    def encrypt_asset(self):
+    #def encrypt_asset(self):
 
 # def decrypt_asset(self):
 # TBC
