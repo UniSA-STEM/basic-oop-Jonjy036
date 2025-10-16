@@ -95,3 +95,26 @@ def decrypt_enemy():
 
     print(opponent)
     print(opponent.get_rig())
+
+def basic_scan_inventory():
+    hacker = Hacker('Joe')
+
+    hacker.aquire_rig('Beast')
+
+    token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
+    chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+
+    hacker.get_inventory().append(token1)
+    hacker.get_inventory().append(chip1)
+    hacker.get_inventory().append(chip2)
+    hacker.get_rig().get_storage().append(chip3)
+
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.scan_inventory('Security Chip')
+
+    print(hacker)
+    print(hacker.get_rig())
