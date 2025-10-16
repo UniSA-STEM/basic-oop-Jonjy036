@@ -7,28 +7,31 @@ Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 from Hacker import Hacker
-#from Rig import Rig
-#from Asset import Asset
+from Rig import Rig
+from Asset import Asset
 
-# Basic early checks on Hacker Instantiation, aquire_rig,
-# find_target and launch_data_spike methods.
+hacker = Hacker('Joe')
 
-hacker1 = Hacker('Joe')
-print(str(hacker1))
+hacker.aquire_rig('Beast')
+token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
+chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
 
-hacker2 = Hacker('j')
-print(str(hacker2))
+hacker.get_inventory().append(token1)
+hacker.get_inventory().append(chip1)
+hacker.get_inventory().append(chip2)
+hacker.get_rig().get_storage().append(chip3)
 
-hacker1.aquire_rig()
-hacker2.aquire_rig()
+print(hacker)
+print(hacker.get_rig())
 
-hacker1.find_target()
-hacker2.find_target()
+hacker.encrypt_asset()
 
-hacker1.launch_data_spike()
-hacker1.launch_data_spike()
-hacker1.launch_data_spike()
+print(hacker)
+print(hacker.get_rig())
 
-print(str(hacker1))
-print(hacker1.get_rig())
+hacker.decrypt_asset()
 
+print(hacker)
+print(hacker.get_rig())
