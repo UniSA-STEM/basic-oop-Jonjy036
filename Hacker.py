@@ -71,7 +71,7 @@ class Hacker:
         self.__trace_level = trace_level
 
     # Allows the hacker to purchase a rig at the expense of 1 crypto token.
-    def aquire_rig(self):
+    def aquire_rig(self, name):
         token_in_inventory = False
         asset_to_remove = None
 
@@ -83,11 +83,10 @@ class Hacker:
 
         # If token found, name the rig and remove token, otherwise print error message
         if token_in_inventory:
-            rig_name = input('Enter a name for your new Rig: ')
-            new_rig = Rig(rig_name)
+            new_rig = Rig(name)
             self.set_rig(new_rig)
             self.__inventory.remove(asset_to_remove)
-            print(f'You now own a Rig! The rig is called: {rig_name}\n')
+            print(f'You now own a Rig! The rig is called: {name}\n')
         else:
             print('you have no crypto tokens. You cannot purchase a rig!\n')
 
