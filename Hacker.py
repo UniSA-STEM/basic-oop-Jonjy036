@@ -219,74 +219,71 @@ class Hacker:
             return
 
         # If chip/s exists, select where to use them from.
-        else:
-            use_from_location = None
-
-            # Chips exist in both Rig Storage and Hacker Inventory.
-            if len(chips_in_inv) > 0 and len(chips_in_rig) > 0:
-                print('you have Security Chips in your inventory and rig storage!')
-                location = input('Which location would you like to use? (inv/sto): ')
-                if location.lower() == 'inv' or location.lower() == 'inv':
-                    use_from_location = location
-                else:
-                    print('Invalid selection. Encryption cancelled!')
-                    return
-
-            # Chips only exist in Inventory.
-            elif len(chips_in_inv) > 0:
-                choice = input('Security chip found in your inventory only. use this? (y/n): ')
-                if choice.lower() == 'y' or choice.lower() == 'yes':
-                    use_from_location = chips_in_inv
-                else:
-                    print('Invalid selection. Encryption cancelled!')
-                    return
-
-            # Chips only exist in Rig Storage.
+        # Chips exist in both Rig Storage and Hacker Inventory.
+        if len(chips_in_inv) > 0 and len(chips_in_rig) > 0:
+            print('you have Security Chips in your inventory and rig storage!')
+            location = input('Which location would you like to use? (inv/sto): ')
+            if location.lower() == 'inv' or location.lower() == 'sto':
+                use_from_location = location.lower()
             else:
-                choice = input('Security chip found in your storage only. use this? (y/n): ')
-                if choice.lower() == 'y' or choice.lower() == 'yes':
-                    use_from_location = chips_in_rig
-                else:
-                    print('Invalid selection. Encryption cancelled!')
-                    return
-
-            # Chip location defines where it can be used. inv->inv or storage->storage.
-            if use_from_location == 'inv':
-                target_location = self.get_inventory()
-            else:
-                target_location = self.get_rig().get_storage()
-
-            # List of unsecured assets in location.
-            unsecured_assets = []
-            for asset in target_location:
-                if not asset.get_encrypted():
-                    unsecured_assets.append(asset)
-
-            # Display unsecured assets (if any).
-            if len(unsecured_assets) == 0:
-                print('You have no unsecured assets in the chosen location.')
+                print('Invalid selection. Encryption cancelled!')
                 return
+
+        # Chips only exist in Inventory.
+        elif len(chips_in_inv) > 0:
+            choice = input('Security chip found in your inventory only. use this? (y/n): ')
+            if choice.lower() == 'y' or choice.lower() == 'yes':
+                use_from_location = 'inv'
             else:
-                print(f'here are the unsecured assets from {use_from_location}:')
+                print('Invalid selection. Encryption cancelled!')
+                return
+
+        # Chips only exist in Rig Storage.
+        else:
+            choice = input('Security chip found in your storage only. use this? (y/n): ')
+            if choice.lower() == 'y' or choice.lower() == 'yes':
+                use_from_location = 'sto'
+            else:
+                print('Invalid selection. Encryption cancelled!')
+                return
+
+        # Chip location defines where it can be used. inv->inv or storage->storage.
+        if use_from_location == 'inv':
+            target_location = self.get_inventory()
+        else:
+            target_location = self.get_rig().get_storage()
+
+        # List of unsecured assets in location.
+        unsecured_assets = []
+        for asset in target_location:
+            if not asset.get_encrypted():
+                unsecured_assets.append(asset)
+
+        # Display unsecured assets (if any).
+        if len(unsecured_assets) == 0:
+            print('You have no unsecured assets in the chosen location.')
+            return
+        else:
+            print(f'here are the unsecured assets from {use_from_location}:')
+            for asset in unsecured_assets:
+                print(f'- {asset.get_name()}')
+
+            # Select which asset to secure.
+            asset_to_encrypt = input('please enter the UUID suffix of the asset to encrypt: ')
+
+            selected_asset = None
+            if len(asset_to_encrypt) != 5:
+                print('invalid UUID. Encryption Cancelled!!')
+            else:
                 for asset in unsecured_assets:
-                    print(f'- {asset.get_name()}')
+                    if asset_to_encrypt in asset.get_name():
+                        selected_asset = asset
 
-                # Select which asset to secure.
-                asset_to_encrypt = input('please enter the UUID suffix of the asset to encrypt: ')
-
-                selected_asset = None
-                if len(asset_to_encrypt) != 5:
-                    print('invalid UUID. Encryption Cancelled!!')
+                if selected_asset is not None:
+                    selected_asset.set_encrypted(True)
+                    print(f'You have encrypted {selected_asset.get_name()}!')
                 else:
-                    for asset in unsecured_assets:
-                        if asset_to_encrypt in asset.get_name():
-                            selected_asset = asset
-
-                    if selected_asset is not None:
-                        selected_asset.set_encrypted(True)
-                        print(f'You have encrypted {selected_asset.get_name()}!')
-                    else:
-                        print('No matching UUID found. Encryption cancelled!')
+                    print('No matching UUID found. Encryption cancelled!')
 
     def decrypt_asset(self, opponent_rig = None):
         # Check for Security Chips and where they are located.
@@ -307,14 +304,12 @@ class Hacker:
             return
 
         # If chip/s exists, select where to use them from.
-        use_from_location = None
-
         # Chips exist in both Rig Storage and Hacker Inventory.
         if len(chips_in_inv) > 0 and len(chips_in_rig) > 0:
             print('you have Security Chips in your inventory and rig storage!')
             location = input('Which location would you like to use? (inv/sto): ')
             if location.lower() == 'inv' or location.lower() == 'sto':
-                use_from_location = location
+                use_from_location = location.lower()
             else:
                 print('Invalid selection. Decryption cancelled!')
                 return
@@ -349,16 +344,6 @@ class Hacker:
             if asset.get_encrypted():
                 secured_assets.append(('self', asset))
 
-        # Check for opponent broken rig, and look for secured assets.
-        if opponent_rig and opponent_rig.get_broken():
-            for asset in opponent_rig.get_storage():
-                if asset.get_encrypted():
-                    secured_assets.append(('opponent', asset))
-
-        if len(secured_assets) == 0:
-            print('Your opponent has no encrypted assets to extract!')
-            return
-
         # Display unsecured assets (if any).
         if len(secured_assets) == 0:
             print('You have no secured assets in the chosen location.')
@@ -368,22 +353,33 @@ class Hacker:
             for asset in secured_assets:
                 print(f'- {asset.get_name()}')
 
-            # Select which asset to decrypt.
-            asset_to_decrypt = input('please enter the UUID suffix of the asset to decrypt: ')
+        # Check for opponent broken rig, and look for secured assets.
+        opponent_secured_assets = []
+        if opponent_rig and opponent_rig.get_broken():
+            for asset in opponent_rig.get_storage():
+                if asset.get_encrypted():
+                    opponent_secured_assets.append(('opponent', asset))
 
-            selected_asset = None
-            if len(asset_to_decrypt) != 5:
-                print('invalid UUID. Encryption Cancelled!!')
+        if len(opponent_secured_assets) == 0:
+            print('Your opponent has no encrypted assets to extract!')
+            return
+
+        # Select which asset to decrypt.
+        asset_to_decrypt = input('please enter the UUID suffix of the asset to decrypt: ')
+
+        selected_asset = None
+        if len(asset_to_decrypt) != 5:
+            print('invalid UUID. Encryption Cancelled!!')
+        else:
+            for asset in secured_assets:
+                if asset_to_decrypt in asset.get_name():
+                    selected_asset = asset
+
+            if selected_asset is not None:
+                selected_asset.set_encrypted(False)
+                print(f'You have decrypted {selected_asset.get_name()}!')
             else:
-                for asset in secured_assets:
-                    if asset_to_decrypt in asset.get_name():
-                        selected_asset = asset
-
-                if selected_asset is not None:
-                    selected_asset.set_encrypted(False)
-                    print(f'You have decrypted {selected_asset.get_name()}!')
-                else:
-                    print('No matching UUID found. Decryption cancelled!')
+                print('No matching UUID found. Decryption cancelled!')
 
 # def upgrade_rig(self):
 # TBC
