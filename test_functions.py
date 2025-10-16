@@ -58,3 +58,40 @@ def encrypt_decrypt_test_1_hacker():
 
     print(hacker)
     print(hacker.get_rig())
+
+def decrypt_enemy():
+    hacker = Hacker('Joe')
+    opponent = Hacker('j')
+
+    hacker.aquire_rig('Beast')
+    opponent.aquire_rig('The Harbinger of Digital Death')
+
+    token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
+    chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+
+    hacker.get_inventory().append(token1)
+    hacker.get_inventory().append(chip1)
+    hacker.get_inventory().append(chip2)
+    hacker.get_rig().get_storage().append(chip3)
+
+    encrypted_asset = Asset('Security Chip', 'a chip used to encrypt/decrypt assets', encrypted=True)
+    opponent.get_rig().get_storage().append(encrypted_asset)
+
+    print(hacker)
+    print(hacker.get_rig())
+
+    print(opponent)
+    print(opponent.get_rig())
+
+    hacker.launch_data_spike()
+    hacker.launch_data_spike()
+
+    hacker.decrypt_asset(opponent_rig=opponent.get_rig())
+
+    print(hacker)
+    print(hacker.get_rig())
+
+    print(opponent)
+    print(opponent.get_rig())
