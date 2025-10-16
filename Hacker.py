@@ -197,7 +197,47 @@ class Hacker:
         else:
             print('There were no unsecured assets. You leave with nothing!')
 
-    #def encrypt_asset(self):
+    def encrypt_asset(self):
+        chips_in_inv = []
+        for asset in self.get_inventory():
+            if asset.get_name().startswith('Security Chip'):
+                chips_in_inv.append(asset)
+
+        chips_in_rig = []
+        if self.get_rig() is not None:
+            for asset in self.get_rig().get_storage():
+                if asset.get_name().startswith('Security Chip'):
+                    chips_in_rig.append(asset)
+
+        if len(chips_in_rig) == 0 and len(chips_in_inv) == 0:
+            print(f'You have no Security Chips in either your inventory or rig storage!')
+            return
+        else:
+            use_from_location = None
+            if len(chips_in_inv) > 0 and len(chips_in_rig) > 0:
+                print('you have Security Chips in your inventory and rig storage!')
+                location = input('Which location would you like to use? (inv/sto): ')
+                if location.lower() == 'inv' or location.lower() == 'inv':
+                    use_from_location = location
+                else:
+                    print('Invalid selection. Encryption cancelled!')
+                    return
+            elif len(chips_in_inv) > 0:
+                choice = input('Security chip found in your inventory only. use this? (y/n): ')
+                if choice.lower() == 'y' or choice.lower() == 'yes':
+                    use_from_location = chips_in_inv
+                else:
+                    print('Invalid selection. Encryption cancelled!')
+                    return
+            else:
+                choice = input('Security chip found in your storage only. use this? (y/n): ')
+                if choice.lower() == 'y' or choice.lower() == 'yes':
+                    use_from_location = chips_in_rig
+                else:
+                    print('Invalid selection. Encryption cancelled!')
+                    return
+
+
 
 # def decrypt_asset(self):
 # TBC
