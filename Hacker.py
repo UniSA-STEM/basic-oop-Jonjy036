@@ -338,31 +338,50 @@ class Hacker:
         else:
             target_location = self.get_rig().get_storage()
 
+        # Identification of hacker opponent.
+        opponent_owner = None
+        for hacker in Hacker.hacker_list:
+            if opponent_rig is not None and hacker.get_rig() == opponent_rig:
+                opponent_owner = hacker
+
         # List of secured assets in location.
-        secured_assets = []
+        my_secured_assets = []
         for asset in target_location:
             if asset.get_encrypted():
-                secured_assets.append(('self', asset))
+                my_secured_assets.append(('self', asset))
 
-        # Display unsecured assets (if any).
-        if len(secured_assets) == 0:
-            print('You have no secured assets in the chosen location.')
-            return
-        else:
-            print(f'here are the secured assets from {use_from_location}:')
-            for asset in secured_assets:
-                print(f'- {asset.get_name()}')
-
-        # Check for opponent broken rig, and look for secured assets.
+        # List of secure assets in opponent's rig.
         opponent_secured_assets = []
         if opponent_rig and opponent_rig.get_broken():
-            for asset in opponent_rig.get_storage():
-                if asset.get_encrypted():
-                    opponent_secured_assets.append(('opponent', asset))
+            if opponent_owner is not None:
+                for asset in opponent_rig.get_storage():
+                    if asset.get_encrypted():
+                        opponent_secured_assets.append((opponent_owner, asset))
+            else:
 
-        if len(opponent_secured_assets) == 0:
-            print('Your opponent has no encrypted assets to extract!')
+                # If opponent not found, fallback option.
+                for asset in opponent_rig.get_storage():
+                    if asset.get_encrypted():
+                        opponent_secured_assets.append(('opponent', asset))
+
+        # Combine lists of secure assets.
+        all_secured_assets = []
+        for item in my_secured_assets:
+            all_secured_assets.append(item)
+        for item in opponent_secured_assets:
+            all_secured_assets.append(item)
+
+        if len(all_secured_assets) == 0:
+            print('No encrypted assets to decrypt!')
             return
+        else:
+            print('Here are the secured assets available for decryption:')
+            for owner, asset in all_secured_assets:
+                if isinstance(owner, str):
+                    owner_name = owner
+                else:
+                    owner_name = owner.get_name()
+                print(f'- {asset.get_name()} (Owner: {owner_name})')
 
         # Select which asset to decrypt.
         asset_to_decrypt = input('please enter the UUID suffix of the asset to decrypt: ')
@@ -371,7 +390,7 @@ class Hacker:
         if len(asset_to_decrypt) != 5:
             print('invalid UUID. Encryption Cancelled!!')
         else:
-            for asset in secured_assets:
+            for owner, asset in all_secured_assets:
                 if asset_to_decrypt in asset.get_name():
                     selected_asset = asset
 
