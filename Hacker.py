@@ -400,14 +400,68 @@ class Hacker:
             else:
                 print('No matching UUID found. Decryption cancelled!')
 
-# def upgrade_rig(self):
-# TBC
+    def upgrade_rig(self):
+        if self.get_rig() is None:
+            print('You have no rig to upgrade!')
+            print('-------\n')
+            return
 
-# def scan_inventory(self):
-# TBC
+        hardware_patches = []
+        for asset in self.get_inventory():
+            if asset.get_name().startswith('Hardware Patch'):
+                hardware_patches.append(asset)
 
-# def store_asset(self, rig_name, asset):
-# TBC
+        if not hardware_patches:
+            print('You have no Hardware Patches in your inventory!')
+            print('-------\n')
+        else:
+            print(f'You have {len(hardware_patches)} Hardware Patches in your inventory!')
+            use_patch = input('Would you like to use one? (y/n): ')
+            if use_patch.lower() == 'y' or use_patch.lower() == 'yes':
+                patch_to_use = hardware_patches[0]
+                self.get_inventory().remove(patch_to_use)
 
-# def retrieve_asset(self, rig_name, asset):
-# TBC
+                current_level = self.get_rig().get_upgrade_level()
+                current_level += 1
+                self.get_rig().set_upgrade_level(current_level)
+
+                print(f'Your rig has now been upgraded. the new level is: {current_level}')
+                print('-------\n')
+            else:
+                print('Upgrade cancelled.)')
+                print('-------\n')
+
+    def scan_inventory(self, asset_name):
+        found = []
+        for asset in self.get_inventory():
+            if asset_name in asset.get_name():
+                found.append(asset)
+
+        if len(found) == 0:
+            print('No matching assets found in inventory!')
+            return
+
+        print('Here are the assets matching your search:')
+        for asset in found:
+            print(f'- {asset.get_name()}')
+
+        want_to_remove = input('Would you like to remove an asset? (y/n): ')
+        if want_to_remove.lower() == 'y' or want_to_remove.lower() == 'yes':
+            asset_to_delete = input('Please enter the UUID of the asset to delete: ')
+            if len(asset_to_delete) == 5:
+                selected_asset = None
+                for asset in found:
+                    if asset_to_delete in asset.get_name():
+                        selected_asset = asset
+                if selected_asset is not None:
+                    self.get_inventory().remove(selected_asset)
+                    print(f'You have removed {selected_asset.get_name()} from your inventory!')
+                else:
+                    print('No matching UUID found. Deletion cancelled!')
+            else:
+                print('Invalid UUID length. Deletion cancelled!')
+        else:
+            print('Deletion cancelled!')
+
+    def store_and_retrieve_asset(self, rig_name, asset):
+
