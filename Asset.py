@@ -16,7 +16,7 @@ class Asset:
         self.__encrypted = encrypted
 
     def __str__(self):
-        if self.__encrypted == True:
+        if self.__encrypted:
             return f'{self.__name}: {self.__description} [Encrypted]'
         else:
             return f'{self.__name}: {self.__description}'
@@ -32,5 +32,3 @@ class Asset:
     # Define Setters
     def set_encrypted(self, encrypted):
         self.__encrypted = encrypted
-
-    # Define Methods
