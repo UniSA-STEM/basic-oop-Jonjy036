@@ -525,7 +525,7 @@ class Hacker:
             print('Deletion cancelled!')
 
     # Define store_asset method. Asset transfers from inventory to rig storage.
-    def store_asset(self, asset_uuid):
+    def store_asset(self, asset_to_store: Asset):
 
         # Validation check for rig existence.
         if self.get_rig() is None:
@@ -535,47 +535,27 @@ class Hacker:
         inv = self.get_inventory()
         sto = self.get_rig().get_storage()
 
+        # Check inventory for any assets matching parameter. (It can only be Security Chips).
+        if asset_to_store not in inv:
+            print('No matching assets found in inventory!')
+            return
+
+        # Check storage capacity.
         if len(sto) >= self.get_rig().get_storage_capacity():
             print('Your storage is full. You cannot store any more assets!!')
             return
 
-        # Check inventory for any assets matching parameter. (It can only be Security Chips).
-        matching_chips = []
-        for asset in inv:
-            if asset_uuid in asset.get_name():
-                if asset.get_name().startswith('Security Chip'):
-                    matching_chips.append(asset)
-
-        # No matching assets.
-        if len(matching_chips) == 0:
-            print('No matching security chips found in inventory!')
+        if not asset_to_store.get_name().startswith('Security Chip'):
+            print('you can only transfer Security chips!')
+            print('Store action Cancelled!')
+            print('-------\n')
             return
 
-        # Matching assets found.
-        print(f'You have {len(matching_chips)} security chips in your inventory '
-              f'avainlable to move to rig storage!')
-        for chip in matching_chips:
-            print(f'- {chip.get_name()}')
-
-        # Select which asset to move.
-        selected_chip = input('Please enter the UUID of the chip to move: ')
-        if len(selected_chip) != 5:
-            print('invalid UUID. Store action cancelled!!')
-            return
-
-        for chip in matching_chips:
-            if selected_chip in chip.get_name():
-                selected_chip = chip
-
-        if selected_chip is not None:
-            inv.remove(selected_chip)
-            sto.append(selected_chip)
-            print(f'You have moved {selected_chip} to rig storage!')
-        else:
-            print('No matching chips found in inventory!')
+        inv.remove(asset_to_store)
+        sto.append(asset_to_store)
 
     # Define retieve asset. Same logic, opposite direction to 'store_asset'.
-    def retrieve_asset(self, asset_uuid):
+    def retrieve_asset(self, asset_to_retrieve: Asset):
         if self.get_rig() is None:
             print('You have no rig to retrieve assets from!')
             return
@@ -583,35 +563,18 @@ class Hacker:
         inv = self.get_inventory()
         sto = self.get_rig().get_storage()
 
-        matching_chips = []
-        for asset in sto:
-            if asset_uuid in asset.get_name():
-                if asset.get_name().startswith('Security Chip'):
-                    matching_chips.append(asset)
-
-        if len(matching_chips) == 0:
-            print('No matching security chips found in rig storage!')
+        if asset_to_retrieve not in sto:
+            print('No matching assets found in storage!')
             return
 
-        print(f'You have {len(matching_chips)} security chips in your rig storage '
-              f'avainlable to move to inventory!')
-        for chip in matching_chips:
-            print(f'- {chip.get_name()}')
-
-        selected_chip = input('Please enter the UUID of the chip to move: ')
-        if len(selected_chip) != 5:
-            print('invalid UUID. Retrieve action cancelled!!')
+        if not asset_to_retrieve.get_name().startswith('Security Chip'):
+            print('you can only transfer Security chips!')
+            print('Retrieve action Cancelled!')
+            print('-------\n')
             return
-        for chip in matching_chips:
-            if selected_chip in chip.get_name():
-                selected_chip = chip
 
-        if selected_chip is not None:
-            sto.remove(selected_chip)
-            inv.append(selected_chip)
-            print(f'You have moved {selected_chip} to inventory!')
-        else:
-            print('No matching chips found in rig storage!')
+        sto.remove(asset_to_retrieve)
+        inv.append(asset_to_retrieve)
 
     def trace_reduction(self):
         if self.get_trace_level() > 0:
