@@ -97,6 +97,8 @@ class Hacker:
 
     # Launch data Spike attack.
     def launch_data_spike(self):
+        broken_level = 5
+
         # Validate that a rig is present.
         if self.get_rig() is None:
             print('You have no rig to launch an attack')
@@ -139,14 +141,25 @@ class Hacker:
             if target_rig is None:
                 print(f'{target_hacker.get_name()} has no rig!! you wasted a Data Spike!!!!')
             else:
-                spike_damage = 1
+                if self.get_rig().get_upgrade_level() == 0:
+                    spike_damage = 1
+                elif self.get_rig().get_upgrade_level() == 1:
+                    spike_damage = 2
+                elif self.get_rig().get_upgrade_level() == 2:
+                    spike_damage = 3
+                elif self.get_rig().get_upgrade_level() == 3:
+                    spike_damage = 4
+                elif self.get_rig().get_upgrade_level() == 4:
+                    spike_damage = 5
+                elif self.get_rig().get_upgrade_level() == 5:
+                    spike_damage = 6
                 new_damage = target_rig.get_damage() + spike_damage
                 target_rig.set_damage(new_damage)
                 print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
                 print('-------\n')
 
                 # Check to see if rig is 'broken'.
-                if new_damage >= 2:
+                if new_damage >= broken_level:
                     target_rig.set_broken(True)
                     print(f'{target_hacker.get_name()} now has a broken rig!!!')
                     print('*******\n')
@@ -189,12 +202,22 @@ class Hacker:
 
         # If viable targets, extract to own storage. If none, extraction fails.
         if len(unsecured_assets) > 0:
+            own_rig_storage = self.get_rig().get_storage()
+            own_rig_capacity = self.get_rig().get_storage_capacity()
+
+            extracted_count = 0
             for asset in unsecured_assets:
-                broken_rig.get_storage().remove(asset)
-                self.get_rig().get_storage().append(asset)
-            print(f'\n{self.get_name()}, You have successfully extracted {len(unsecured_assets)}!!\n')
-        else:
-            print('There were no unsecured assets. You leave with nothing!')
+                if len(own_rig_storage) < own_rig_capacity:
+                    broken_rig.get_storage().remove(asset)
+                    self.get_rig().get_storage().append(asset)
+                    extracted_count += 1
+                else:
+                    print('Rig Storage full. You cannot extract any more items.')
+
+            if extracted_count > 0:
+                print(f'\n{self.get_name()}, You have successfully extracted {len(unsecured_assets)}!!\n')
+            else:
+                print('There were no unsecured assets. You leave with nothing!')
 
     # Define Encryption method.
     def encrypt_asset(self):
@@ -400,11 +423,18 @@ class Hacker:
 
     # Define the upgrade_rig method.
     def upgrade_rig(self):
+        max_level = 5
+
         # Validation check for rig existence.
         if self.get_rig() is None:
             print('You have no rig to upgrade!')
             print('-------\n')
             return
+
+        if self.get_rig().get_level() >= max_level:
+            self.get_rig().set_level(max_level)
+            print('\nYou are at MAX LEVEL!!')
+            print('You cannot upgrade you rig any further.\n')
 
         # Check for hardware patches.
         hardware_patches = []
@@ -480,6 +510,10 @@ class Hacker:
 
         inv = self.get_inventory()
         sto = self.get_rig().get_storage()
+
+        if len(sto) >= self.get_rig().get_storage_capacity():
+            print('Your storage is full. You cannot store any more assets!!')
+            return
 
         # Check inventory for any assets matching parameter. (It can only be Security Chips).
         matching_chips = []
