@@ -12,6 +12,7 @@ from Rig import Rig
 
 # Define class, __init__ and __str__.
 class Hacker:
+    EXPOSED = 5
     hacker_list = []
 
     def __init__(self, name: str):
@@ -103,6 +104,11 @@ class Hacker:
             print('-------\n')
             return
 
+        current_trace_level = self.get_trace_level()
+        if current_trace_level >= Hacker.EXPOSED:
+            print('You are Exposed. You cannot launch an attack!')
+            return
+
         # Search rig storage for data spikes.
         data_spikes = []
         for asset in self.get_rig().get_storage():
@@ -121,6 +127,12 @@ class Hacker:
 
         # Request target name.
         target_name = input('Enter a target name to launch Data Spike attack at: \n')
+
+        new_trace_level = self.get_trace_level() + 1
+        self.set_trace_level(new_trace_level)
+        if new_trace_level >= Hacker.EXPOSED:
+            print('You have been exposed. you cannot complete an extraction')
+            return
 
         # Validation of target input.
         target_hacker = None
@@ -175,6 +187,11 @@ class Hacker:
             print(f' there is no hacker by the name of {target_name}\n')
 
     def extract_unsecured_assets(self, broken_rig):
+        current_trace_level = self.get_trace_level()
+        if current_trace_level >= Hacker.EXPOSED:
+            print('You have been exposed. you cannot complete extraction')
+            return
+
         if not broken_rig.get_broken():
             print('This rig is not broken. You cannot extract assets!!')
             return
@@ -222,6 +239,9 @@ class Hacker:
                 print(f'\n{self.get_name()}, You have successfully extracted {len(unsecured_assets)}!!\n')
             else:
                 print('There were no unsecured assets. You leave with nothing!')
+        new_trace_level = self.get_trace_level() + 1
+        if new_trace_level >= Hacker.EXPOSED:
+            print('You have now been exposed.')
 
     # Define Encryption method.
     def encrypt_asset(self):
@@ -592,3 +612,10 @@ class Hacker:
             print(f'You have moved {selected_chip} to inventory!')
         else:
             print('No matching chips found in rig storage!')
+
+    def trace_reduction(self):
+        if self.get_trace_level() > 0:
+            print(f'\nYou have a trace level of {self.get_trace_level()}!')
+            print('Reducing now\n')
+            self.set_trace_level(self.get_trace_level() - 1)
+            print(f'Your new trace level is {self.get_trace_level()}!\n')
