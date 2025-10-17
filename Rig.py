@@ -9,7 +9,7 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 from Asset import Asset
 import random
 
-# Define class, __init__ and __str__
+# Define class, __init__ and __str__.
 class Rig:
     def __init__(self, name: str):
         self.__name = name
@@ -45,7 +45,7 @@ class Rig:
             f'Upgrade level: {self.__upgrade_level}\n'
         )
 
-    # Define Getters
+    # Define Getters.
     def get_name(self):
         return self.__name
     def get_damage(self):
@@ -57,7 +57,7 @@ class Rig:
     def get_upgrade_level(self):
         return self.__upgrade_level
 
-    # Define Setters
+    # Define Setters.
     def set_damage(self, damage):
         self.__damage = damage
     def set_broken(self, broken):
@@ -67,8 +67,15 @@ class Rig:
     def set_upgrade_level(self, upgrade_level):
         self.__upgrade_level = upgrade_level
 
-    # Define Methods
+    # Define repair_rig.
     def repair_rig(self, hacker):
+        if hacker.get_rig() is None:
+            print('\nNo rig found')
+            print('Repair Cancelled')
+            print('---------\n')
+            return
+
+        # Check if the rig has any damage to be repaired.
         if self.get_damage() == 0:
             print('\nthere is no damage to fix. Happy days!')
             print('repair cancelled')
@@ -79,13 +86,16 @@ class Rig:
                 if asset.get_name().startswith('Crypto Token'):
                     tokens.append(asset)
 
+            # Check is token exist to perform repair.
             if len(tokens) == 0:
                 print('\nyou have no tokens to repair the rig with.')
-                print('repair cancelled')
+                print('Repair cancelled')
                 print('---------\n')
             else:
                 print(f'You have {len(tokens)} tokens to repair the rig with.')
                 print(f'Your damage is {self.get_damage()}.')
+
+                # Manual validation to continue repair action.
                 repair = input('would you like to use a token to repair your rig? (y/n): ')
 
                 if repair.lower() == 'y' or repair.lower() == 'yes':
@@ -98,15 +108,48 @@ class Rig:
                     print('---------\n')
 
                 else:
-                    print('\nrepair cancelled')
+                    print('\nRepair cancelled')
                     print('---------\n')
 
+    # Define method for asset generation.
+    def generate_asset(self, hacker):
 
-    #def upgrade_rig(self):
-        # TBC
+        # Validate if rig exists.
+        if hacker.get_rig() is None:
+            print('\nNo rig found')
+            print('Asset generation Cancelled')
+            print('---------\n')
+            return
 
-    #def generate_asset(self):
-        # TBC
+        # lists for asset names and asset descriptions.
+        asset_names = [
+            'Crypto Token',
+            'Data Spike',
+            'Hardware Patch',
+            'Removable Drive',
+            'Security Chip'
+        ]
+        asset_descriptions = [
+            'Digital currency used to purchase rigs',
+            'A digital item used in battles',
+            'A patch used to upgrade rigs',
+            'Hardware used to extract assets'
+            'a chip used to encrypt/decrypt assets'
+        ]
+
+        # Ensure that the correct description is matched with the correct name.
+        index = random.randint(0, len(asset_names) - 1)
+        asset_name = asset_names[index]
+        asset_description = asset_descriptions[index]
+
+        new_asset = Asset(asset_name, asset_description)
+
+        # Define the location the Asset is created in.
+        if asset_name in ['Crypto Token', 'Hardware Patch']:
+            hacker.get_inventory().append(new_asset)
+        else:
+            self.get_storage().append(new_asset)
+
 
     #def check_condition(self):
         # TBC
