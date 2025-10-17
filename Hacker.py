@@ -493,7 +493,7 @@ class Hacker:
             print('No matching security chips found in inventory!')
             return
 
-        # MAtching assets found.
+        # Matching assets found.
         print(f'You have {len(matching_chips)} security chips in your inventory '
               f'avainlable to move to rig storage!')
         for chip in matching_chips:
@@ -516,7 +516,7 @@ class Hacker:
         else:
             print('No matching chips found in inventory!')
 
-    # Define retieve asset. Same logic, opposite direction to store.
+    # Define retieve asset. Same logic, opposite direction to 'store_asset'.
     def retrieve_asset(self, asset_uuid):
         if self.get_rig() is None:
             print('You have no rig to retrieve assets from!')
