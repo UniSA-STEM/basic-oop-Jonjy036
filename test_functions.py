@@ -9,9 +9,7 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 from Hacker import Hacker
 from Asset import Asset
 
-# Basic early checks on Hacker Instantiation, aquire_rig,
-# find_target and launch_data_spike methods.
-# Test extraction of assets and validation of empty target inventory.
+# Basic Hacker method tests.
 def basic_test_and_attack():
     hacker1 = Hacker('Joe')
     print(str(hacker1))
@@ -153,6 +151,62 @@ def basic_upgrade_test():
 
     hacker.get_rig().check_condition()
 
+def basic_store_and_retrieve_test():
+    hacker = Hacker('Joe')
+    hacker.aquire_rig('Beast')
+
+    print(hacker.get_rig())
+
+    token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
+    chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+
+    hacker.get_inventory().append(token1)
+    hacker.get_inventory().append(chip1)
+    hacker.get_inventory().append(chip2)
+    hacker.get_rig().get_storage().append(chip3)
+
+    print('Baseline check')
+    print('-----------')
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.store_asset(chip1)
+
+    print('after first store. should be successful.')
+    print('-----------')
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.store_asset(chip2)
+
+    print('after second store. should be successful.')
+    print('-----------')
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.store_asset(token1)
+    print('after third store. should fail.')
+    print('-----------')
+
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.retrieve_asset(chip1)
+
+    print('after first retrieve. should be successful.')
+    print('-----------')
+    print(hacker)
+    print(hacker.get_rig())
+
+    hacker.retrieve_asset(token1)
+
+    print('after second retrieve. should fail.')
+    print('-----------')
+    print(hacker)
+    print(hacker.get_rig())
+
 def basic_scan_inventory():
     hacker = Hacker('Joe')
 
@@ -176,7 +230,8 @@ def basic_scan_inventory():
     print(hacker)
     print(hacker.get_rig())
 
-#def basic_repair_rig_test():
+# Basic Rig method tests.
+def basic_repair_rig_test():
     hacker = Hacker('Joe')
 
     hacker.aquire_rig('Beast')
