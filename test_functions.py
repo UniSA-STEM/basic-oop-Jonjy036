@@ -118,3 +118,23 @@ def basic_scan_inventory():
 
     print(hacker)
     print(hacker.get_rig())
+
+def basic_repair_rig_test():
+    hacker = Hacker('Joe')
+
+    hacker.aquire_rig('Beast')
+
+    hacker.get_rig().set_damage(5)
+    hacker.get_rig().set_broken(True)
+
+    crypto_token = Asset('Crypto Token', 'Digital currency used to purchase rigs')
+    hacker.get_inventory().append(crypto_token)
+
+    print(hacker.get_rig())
+
+    rig = hacker.get_rig()
+    rig.repair_rig(hacker)
+
+    print(hacker.get_rig())
+
+
