@@ -32,6 +32,9 @@ def basic_test_and_attack():
     print(str(hacker1))
     print(hacker1.get_rig())
 
+    print(str(hacker2))
+    print(hacker2.get_rig())
+
 def encrypt_decrypt_test_1_hacker():
     hacker = Hacker('Joe')
 
@@ -59,6 +62,23 @@ def encrypt_decrypt_test_1_hacker():
     print(hacker)
     print(hacker.get_rig())
 
+def basic_extraction_test():
+    hacker = Hacker('Joe')
+    hacker.aquire_rig('Beast')
+
+    hacker2 = Hacker('j')
+    hacker2.aquire_rig('The Harbinger of Digital Death')
+
+    print(hacker.get_rig())
+    print(hacker2.get_rig())
+
+    hacker2.get_rig().set_broken(True)
+
+    hacker.extract_unsecured_assets(hacker2.get_rig())
+
+    print(hacker.get_rig())
+    print(hacker2.get_rig())
+
 def decrypt_enemy():
     hacker = Hacker('Joe')
     opponent = Hacker('j')
@@ -67,9 +87,9 @@ def decrypt_enemy():
     opponent.aquire_rig('The Harbinger of Digital Death')
 
     token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
-    chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-    chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-    chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip1 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
+    chip2 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
+    chip3 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
 
     hacker.get_inventory().append(token1)
     hacker.get_inventory().append(chip1)
@@ -96,15 +116,52 @@ def decrypt_enemy():
     print(opponent)
     print(opponent.get_rig())
 
+def basic_upgrade_test():
+    hacker = Hacker('Joe')
+    hacker.aquire_rig('Beast')
+
+    print(hacker.get_rig())
+
+    patch1 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+    patch2 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+    patch3 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+    patch4 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+    patch5 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+
+    hacker.get_inventory().append(patch1)
+    hacker.get_inventory().append(patch2)
+    hacker.get_inventory().append(patch3)
+    hacker.get_inventory().append(patch4)
+    hacker.get_inventory().append(patch5)
+
+    print(hacker.get_rig())
+
+    hacker.upgrade_rig()
+    print(hacker.get_rig())
+
+    hacker.upgrade_rig()
+    print(hacker.get_rig())
+
+    hacker.upgrade_rig()
+    print(hacker.get_rig())
+
+    hacker.upgrade_rig()
+    print(hacker.get_rig())
+
+    hacker.upgrade_rig()
+    print(hacker.get_rig())
+
+    hacker.get_rig().check_condition()
+
 def basic_scan_inventory():
     hacker = Hacker('Joe')
 
     hacker.aquire_rig('Beast')
 
     token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
-    chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-    chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-    chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+    chip1 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
+    chip2 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
+    chip3 = Asset('Security Chip', 'A chip used to encrypt/decrypt assets')
 
     hacker.get_inventory().append(token1)
     hacker.get_inventory().append(chip1)
@@ -119,7 +176,7 @@ def basic_scan_inventory():
     print(hacker)
     print(hacker.get_rig())
 
-def basic_repair_rig_test():
+#def basic_repair_rig_test():
     hacker = Hacker('Joe')
 
     hacker.aquire_rig('Beast')
@@ -136,5 +193,4 @@ def basic_repair_rig_test():
     rig.repair_rig(hacker)
 
     print(hacker.get_rig())
-
 
