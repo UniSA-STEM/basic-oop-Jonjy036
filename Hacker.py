@@ -455,8 +455,8 @@ class Hacker:
             print('-------\n')
             return
 
-        if self.get_rig().get_level() >= max_level:
-            self.get_rig().set_level(max_level)
+        if self.get_rig().get_upgrade_level() >= max_level:
+            self.get_rig().set_upgrade_level(max_level)
             print('\nYou are at MAX LEVEL!!')
             print('You cannot upgrade you rig any further.\n')
 
