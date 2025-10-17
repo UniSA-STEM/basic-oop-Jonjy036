@@ -11,6 +11,8 @@ import random
 
 # Define class, __init__ and __str__.
 class Rig:
+    BROKEN_LEVEL = 10    # Class constant defining damage level required for rig to break.
+
     def __init__(self, name: str):
         self.__name = name
         self.__damage = 0
@@ -60,6 +62,7 @@ class Rig:
     # Define Setters.
     def set_damage(self, damage):
         self.__damage = damage
+        self.broken_status_check()
     def set_broken(self, broken):
         self.__broken = broken
     def set_storage(self, storage):
@@ -76,6 +79,14 @@ class Rig:
     # Helper method to allow ease of implementation of storage capacity. Returns a Boolean.
     def can_store_asset(self):
         return len(self.get_storage()) < self.get_storage_capacity()
+
+    # Define broken_status_check
+    def broken_status_check(self):
+        if self.get_damage() >= Rig.BROKEN_LEVEL:
+            self.set_broken(True)
+        else:
+            self.set_broken(False)
+
 
     # Define repair_rig.
     def repair_rig(self, hacker):
@@ -167,4 +178,10 @@ class Rig:
                 return
 
 
-    def check_condition(self):
+    #def check_condition(self):
+     #   health = self.get_damage()
+      #  power = self.get_upgrade_level() + 1
+       # condition = health * power
+        #if health ==
+        #if condition == 0:
+
