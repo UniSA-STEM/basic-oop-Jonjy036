@@ -68,8 +68,39 @@ class Rig:
         self.__upgrade_level = upgrade_level
 
     # Define Methods
-    #def repair_rig(self):
-        # TBC
+    def repair_rig(self, hacker):
+        if self.get_damage() == 0:
+            print('there is no damage to fix. Happy days!')
+            print('repair cancelled')
+            print('---------')
+        else:
+            tokens = []
+            for asset in hacker.get_inventory():
+                if asset.get_name.startswith('Crypto Token'):
+                    tokens.append(asset)
+
+            if len(tokens) == 0:
+                print('you have no tokens to repair the rig with.')
+                print('repair cancelled')
+                print('---------')
+            else:
+                print(f'You have {len(tokens)} tokens to repair the rig with.')
+                print(f'Your damage is {self.get_damage()}.')
+                repair = input('would you like to use a token to repair your rig? (y/n): ')
+
+                if repair.lower == 'y' or repair.lower() == 'yes':
+                    print('You have chosen to repair your rig!')
+                    self.set_damage(0)
+                    self.set_broken(False)
+                    print(f' Damage = {self.get_damage()}.')
+                    print(f' Broken = {self.get_broken()}.')
+                    print('Repair Complete')
+                    print('---------')
+
+                else:
+                    print('repair cancelled')
+                    print('---------')
+
 
     #def upgrade_rig(self):
         # TBC
