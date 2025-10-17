@@ -97,8 +97,6 @@ class Hacker:
 
     # Launch data Spike attack.
     def launch_data_spike(self):
-        broken_level = 5
-
         # Validate that a rig is present.
         if self.get_rig() is None:
             print('You have no rig to launch an attack')
@@ -141,26 +139,32 @@ class Hacker:
             if target_rig is None:
                 print(f'{target_hacker.get_name()} has no rig!! you wasted a Data Spike!!!!')
             else:
-                if self.get_rig().get_upgrade_level() == 0:
+                upgrade_level = self.get_rig().get_upgrade_level()
+                if upgrade_level == 0:
                     spike_damage = 1
-                elif self.get_rig().get_upgrade_level() == 1:
+                elif upgrade_level == 1:
                     spike_damage = 2
-                elif self.get_rig().get_upgrade_level() == 2:
+                elif upgrade_level == 2:
                     spike_damage = 3
-                elif self.get_rig().get_upgrade_level() == 3:
+                elif upgrade_level == 3:
                     spike_damage = 4
-                elif self.get_rig().get_upgrade_level() == 4:
+                elif upgrade_level == 4:
                     spike_damage = 5
-                elif self.get_rig().get_upgrade_level() == 5:
+                elif upgrade_level == 5:
                     spike_damage = 6
+                else:
+                    spike_damage = 1    # Fallback in case of issues in upgrade number.
+
                 new_damage = target_rig.get_damage() + spike_damage
                 target_rig.set_damage(new_damage)
+
                 print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
                 print('-------\n')
 
                 # Check to see if rig is 'broken'.
-                if new_damage >= broken_level:
-                    target_rig.set_broken(True)
+                target_rig.broken_status_check()
+
+                if target_rig.get_broken():
                     print(f'{target_hacker.get_name()} now has a broken rig!!!')
                     print('*******\n')
 
