@@ -177,11 +177,22 @@ class Rig:
                 print('---------\n')
                 return
 
+    def check_condition(self):
+        damage = self.get_damage()
+        power = self.get_upgrade_level()
 
-    #def check_condition(self):
-     #   health = self.get_damage()
-      #  power = self.get_upgrade_level() + 1
-       # condition = health * power
-        #if health ==
-        #if condition == 0:
+        if damage >= 10:
+            damage_label = 'Broken'
+        elif damage >= 8:
+            damage_label = 'Very Poor'
+        elif damage >= 5:
+            damage_label = 'Poor'
+        elif damage >= 3:
+            damage_label = 'OK'
+        elif damage >= 1:
+            damage_label = 'Good'
+        else:
+            damage_label = 'Pristine'
+
+        print(f'{damage_label} (Level {power})')
 
