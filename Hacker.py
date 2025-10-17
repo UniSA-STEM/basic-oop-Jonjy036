@@ -7,9 +7,6 @@ Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 from Asset import Asset
-
-import random
-
 from Rig import Rig
 
 
@@ -285,6 +282,7 @@ class Hacker:
                 else:
                     print('No matching UUID found. Encryption cancelled!')
 
+    # Define the decrypt_asset method.
     def decrypt_asset(self, opponent_rig = None):
         # Check for Security Chips and where they are located.
         chips_in_inv = []
@@ -400,12 +398,15 @@ class Hacker:
             else:
                 print('No matching UUID found. Decryption cancelled!')
 
+    # Define the upgrade_rig method.
     def upgrade_rig(self):
+        # Validation check for rig existence.
         if self.get_rig() is None:
             print('You have no rig to upgrade!')
             print('-------\n')
             return
 
+        # Check for hardware patches.
         hardware_patches = []
         for asset in self.get_inventory():
             if asset.get_name().startswith('Hardware Patch'):
@@ -415,12 +416,14 @@ class Hacker:
             print('You have no Hardware Patches in your inventory!')
             print('-------\n')
         else:
+            # If hardware patch exists, check if user wants to continue upgrade.
             print(f'You have {len(hardware_patches)} Hardware Patches in your inventory!')
             use_patch = input('Would you like to use one? (y/n): ')
             if use_patch.lower() == 'y' or use_patch.lower() == 'yes':
                 patch_to_use = hardware_patches[0]
                 self.get_inventory().remove(patch_to_use)
 
+                # Increase rig level by 1 per upgrade.
                 current_level = self.get_rig().get_upgrade_level()
                 current_level += 1
                 self.get_rig().set_upgrade_level(current_level)
@@ -431,7 +434,9 @@ class Hacker:
                 print('Upgrade cancelled.)')
                 print('-------\n')
 
+    # Define the scan_inventory method. Parameter is asset name (Security Chip/Crypto Token/Hardware Patch).
     def scan_inventory(self, asset_name):
+        # Validation check for existence of named asset.
         found = []
         for asset in self.get_inventory():
             if asset_name in asset.get_name():
@@ -441,10 +446,12 @@ class Hacker:
             print('No matching assets found in inventory!')
             return
 
+        # Print list of matching assets.
         print('Here are the assets matching your search:')
         for asset in found:
             print(f'- {asset.get_name()}')
 
+        # Check to see if the user wants to remove an asset. Remove selected asset.
         want_to_remove = input('Would you like to remove an asset? (y/n): ')
         if want_to_remove.lower() == 'y' or want_to_remove.lower() == 'yes':
             asset_to_delete = input('Please enter the UUID of the asset to delete: ')
@@ -463,5 +470,87 @@ class Hacker:
         else:
             print('Deletion cancelled!')
 
-    def store_and_retrieve_asset(self, rig_name, asset):
+    # Define store_asset method. Asset transfers from inventory to rig storage.
+    def store_asset(self, asset_uuid):
 
+        # Validation check for rig existence.
+        if self.get_rig() is None:
+            print('You have no rig to store assets in!')
+            return
+
+        inv = self.get_inventory()
+        sto = self.get_rig().get_storage()
+
+        # Check inventory for any assets matching parameter. (It can only be Security Chips).
+        matching_chips = []
+        for asset in inv:
+            if asset_uuid in asset.get_name():
+                if asset.get_name().startswith('Security Chip'):
+                    matching_chips.append(asset)
+
+        # No matching assets.
+        if len(matching_chips) == 0:
+            print('No matching security chips found in inventory!')
+            return
+
+        # MAtching assets found.
+        print(f'You have {len(matching_chips)} security chips in your inventory '
+              f'avainlable to move to rig storage!')
+        for chip in matching_chips:
+            print(f'- {chip.get_name()}')
+
+        # Select which asset to move.
+        selected_chip = input('Please enter the UUID of the chip to move: ')
+        if len(selected_chip) != 5:
+            print('invalid UUID. Store action cancelled!!')
+            return
+
+        for chip in matching_chips:
+            if selected_chip in chip.get_name():
+                selected_chip = chip
+
+        if selected_chip is not None:
+            inv.remove(selected_chip)
+            sto.append(selected_chip)
+            print(f'You have moved {selected_chip} to rig storage!')
+        else:
+            print('No matching chips found in inventory!')
+
+    # Define retieve asset. Same logic, opposite direction to store.
+    def retrieve_asset(self, asset_uuid):
+        if self.get_rig() is None:
+            print('You have no rig to retrieve assets from!')
+            return
+
+        inv = self.get_inventory()
+        sto = self.get_rig().get_storage()
+
+        matching_chips = []
+        for asset in sto:
+            if asset_uuid in asset.get_name():
+                if asset.get_name().startswith('Security Chip'):
+                    matching_chips.append(asset)
+
+        if len(matching_chips) == 0:
+            print('No matching security chips found in rig storage!')
+            return
+
+        print(f'You have {len(matching_chips)} security chips in your rig storage '
+              f'avainlable to move to inventory!')
+        for chip in matching_chips:
+            print(f'- {chip.get_name()}')
+
+        selected_chip = input('Please enter the UUID of the chip to move: ')
+        if len(selected_chip) != 5:
+            print('invalid UUID. Retrieve action cancelled!!')
+            return
+        for chip in matching_chips:
+            if selected_chip in chip.get_name():
+                selected_chip = chip
+
+        if selected_chip is not None:
+            sto.remove(selected_chip)
+            inv.append(selected_chip)
+            print(f'You have moved {selected_chip} to inventory!')
+        else:
+            print('No matching chips found in rig storage!')
