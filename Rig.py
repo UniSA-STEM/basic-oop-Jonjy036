@@ -67,6 +67,16 @@ class Rig:
     def set_upgrade_level(self, upgrade_level):
         self.__upgrade_level = upgrade_level
 
+    # Define Storage Capacity method.
+    def get_storage_capacity(self):
+        base_capacity = 10
+        additional_per_level = 2
+        return base_capacity + (self.get_upgrade_level() * additional_per_level)
+
+    # Helper method to allow ease of implementation of storage capacity. Returns a Boolean.
+    def can_store_asset(self):
+        return len(self.get_storage()) < self.get_storage_capacity()
+
     # Define repair_rig.
     def repair_rig(self, hacker):
         if hacker.get_rig() is None:
@@ -133,7 +143,7 @@ class Rig:
             'Digital currency used to purchase rigs',
             'A digital item used in battles',
             'A patch used to upgrade rigs',
-            'Hardware used to extract assets'
+            'Hardware used to extract assets',
             'a chip used to encrypt/decrypt assets'
         ]
 
@@ -148,8 +158,13 @@ class Rig:
         if asset_name in ['Crypto Token', 'Hardware Patch']:
             hacker.get_inventory().append(new_asset)
         else:
-            self.get_storage().append(new_asset)
+            if self.can_store_asset():
+                self.get_storage().append(new_asset)
+            else:
+                print('\nYou have not enough storage space to store this asset.')
+                print('Generate Asset Cancelled')
+                print('---------\n')
+                return
 
 
-    #def check_condition(self):
-        # TBC
+    def check_condition(self):
