@@ -456,6 +456,11 @@ class Hacker:
             print('\nYou are at MAX LEVEL!!')
             print('You cannot upgrade you rig any further.\n')
 
+        if self.get_rig().get_broken() is True:
+            print('\nYour Rig is Broken!\n')
+            print('You cannot upgrade while broken!')
+            print('-------\n')
+
         # Check for hardware patches.
         hardware_patches = []
         for asset in self.get_inventory():
