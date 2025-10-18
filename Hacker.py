@@ -146,31 +146,27 @@ class Hacker:
             print(f'Launching Data Spike attack against {target_hacker.get_name()}\n')
             self.__rig.get_storage().remove(data_spike_for_attack)
 
-            # If target has no rig display message. If rig does exist, apply damage.
+            # If target has no rig, display message. If rig does exist, apply damage.
             target_rig = target_hacker.get_rig()
             if target_rig is None:
                 print(f'{target_hacker.get_name()} has no rig!! you wasted a Data Spike!!!!')
             else:
-                upgrade_level = self.get_rig().get_upgrade_level()
-                if upgrade_level == 0:
-                    spike_damage = 1
-                elif upgrade_level == 1:
-                    spike_damage = 2
-                elif upgrade_level == 2:
-                    spike_damage = 3
-                elif upgrade_level == 3:
-                    spike_damage = 4
-                elif upgrade_level == 4:
-                    spike_damage = 5
-                elif upgrade_level == 5:
-                    spike_damage = 6
+                spike_damage = 6
+
+                target_upgrade_level = target_rig.get_upgrade_level()
+                damage_reduction = target_upgrade_level * 1    # Reduction level 1 per level between 0 an 5.
+
+                if damage_reduction >= spike_damage:
+                    reduced_damage = 0    # Cannot have negative damage.
+                elif damage_reduction == 0:
+                    reduced_damage = spike_damage
                 else:
-                    spike_damage = 1    # Fallback in case of issues in upgrade number.
+                    reduced_damage = spike_damage - damage_reduction
 
                 new_damage = target_rig.get_damage() + spike_damage
                 target_rig.set_damage(new_damage)
 
-                print(f'{target_hacker.get_name()} was hit and {spike_damage} damage was caused.')
+                print(f'{target_hacker.get_name()} was hit and {reduced_damage} damage was caused.')
                 print('-------\n')
 
                 # Check to see if rig is 'broken'.
