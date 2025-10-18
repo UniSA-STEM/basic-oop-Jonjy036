@@ -11,7 +11,7 @@ import random
 
 # Define class, __init__ and __str__.
 class Rig:
-    BROKEN_LEVEL = 10    # Class constant defining damage level required for rig to break.
+    BROKEN_LEVEL = 20    # Class constant defining damage level required for rig to break.
 
     def __init__(self, name: str):
         self.__name = name
