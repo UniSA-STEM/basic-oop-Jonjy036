@@ -72,8 +72,8 @@ class Rig:
 
     # Define Storage Capacity method.
     def get_storage_capacity(self):
-        base_capacity = 10
-        additional_per_level = 2
+        base_capacity = 10            # Base level for Rig Storage capacity.
+        additional_per_level = 2      # Each upgrade level increments capacity by this.
         return base_capacity + (self.get_upgrade_level() * additional_per_level)
 
     # Helper method to allow ease of implementation of storage capacity. Returns a Boolean.
