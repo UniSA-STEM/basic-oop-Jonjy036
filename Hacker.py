@@ -107,6 +107,7 @@ class Hacker:
         current_trace_level = self.get_trace_level()
         if current_trace_level >= Hacker.EXPOSED:
             print('You are Exposed. You cannot launch an attack!')
+            print('-------\n')
             return
 
         # Search rig storage for data spikes.
@@ -163,7 +164,7 @@ class Hacker:
                 else:
                     reduced_damage = spike_damage - damage_reduction
 
-                new_damage = target_rig.get_damage() + spike_damage
+                new_damage = target_rig.get_damage() + reduced_damage
                 target_rig.set_damage(new_damage)
 
                 print(f'{target_hacker.get_name()} was hit and {reduced_damage} damage was caused.')
@@ -190,6 +191,7 @@ class Hacker:
 
         if not broken_rig.get_broken():
             print('This rig is not broken. You cannot extract assets!!')
+            print('-------\n')
             return
 
         # Search rig storage for removable drive.
@@ -238,6 +240,8 @@ class Hacker:
         new_trace_level = self.get_trace_level() + 1
         if new_trace_level >= Hacker.EXPOSED:
             print('You have now been exposed.')
+            print('-------\n')
+
 
     # Define Encryption method.
     def encrypt_asset(self):
