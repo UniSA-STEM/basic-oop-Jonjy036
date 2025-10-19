@@ -9,9 +9,10 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 from Asset import Asset
 import random
 
+
 # Define class, __init__ and __str__.
 class Rig:
-    BROKEN_LEVEL = 20    # Class constant defining damage level required for rig to break.
+    BROKEN_LEVEL = 20  # Class constant defining damage level required for rig to break.
 
     def __init__(self, name: str):
         self.__name = name
@@ -50,12 +51,16 @@ class Rig:
     # Define Getters.
     def get_name(self):
         return self.__name
+
     def get_damage(self):
         return self.__damage
+
     def get_broken(self):
         return self.__broken
+
     def get_storage(self):
         return self.__storage
+
     def get_upgrade_level(self):
         return self.__upgrade_level
 
@@ -63,17 +68,20 @@ class Rig:
     def set_damage(self, damage):
         self.__damage = damage
         self.broken_status_check()
+
     def set_broken(self, broken):
         self.__broken = broken
+
     def set_storage(self, storage):
         self.__storage = storage
+
     def set_upgrade_level(self, upgrade_level):
         self.__upgrade_level = upgrade_level
 
     # Define Storage Capacity method.
     def get_storage_capacity(self):
-        base_capacity = 10            # Base level for Rig Storage capacity.
-        additional_per_level = 2      # Each upgrade level increments capacity by this.
+        base_capacity = 10  # Base level for Rig Storage capacity.
+        additional_per_level = 2  # Each upgrade level increments capacity by this.
         return base_capacity + (self.get_upgrade_level() * additional_per_level)
 
     # Helper method to allow ease of implementation of storage capacity. Returns a Boolean.
@@ -86,7 +94,6 @@ class Rig:
             self.set_broken(True)
         else:
             self.set_broken(False)
-
 
     # Define repair_rig.
     def repair_rig(self, hacker):
@@ -195,4 +202,3 @@ class Rig:
             damage_label = 'Pristine'
 
         print(f'{damage_label} (Level {power})')
-

@@ -40,7 +40,7 @@ hacker2.get_inventory().append(patch2)
 # Check hacker2 base level rig info.
 print(hacker2.get_rig())
 
-#Hacker 1 finds available targets.
+# Hacker 1 finds available targets.
 hacker1.find_target()
 
 # Hacker 1 launches initial strikes.

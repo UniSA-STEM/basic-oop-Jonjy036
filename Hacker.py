@@ -157,10 +157,10 @@ class Hacker:
                 spike_damage = 6
 
                 target_upgrade_level = target_rig.get_upgrade_level()
-                damage_reduction = target_upgrade_level * 1    # Reduction level 1 per level between 0 an 5.
+                damage_reduction = target_upgrade_level * 1  # Reduction level 1 per level between 0 an 5.
 
                 if damage_reduction >= spike_damage:
-                    reduced_damage = 0    # Cannot have negative damage.
+                    reduced_damage = 0  # Cannot have negative damage.
                 elif damage_reduction == 0:
                     reduced_damage = spike_damage
                 else:
@@ -251,7 +251,6 @@ class Hacker:
             print('You have now been exposed.')
             print('-------\n')
 
-
     # Define Encryption method.
     def encrypt_asset(self):
         # Check for Security Chips and where they are located.
@@ -339,7 +338,7 @@ class Hacker:
                     print('No matching UUID found. Encryption cancelled!')
 
     # Define the decrypt_asset method.
-    def decrypt_asset(self, opponent_rig = None):
+    def decrypt_asset(self, opponent_rig=None):
         # Check for Security Chips and where they are located.
         chips_in_inv = []
         for asset in self.get_inventory():
