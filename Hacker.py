@@ -20,6 +20,7 @@ class Hacker:
         self.__inventory = []
         self.__rig = None
         self.__trace_level = 0
+        self.__exposed_status = False
         Hacker.hacker_list.append(self)
 
         crypto_token = Asset('Crypto Token', 'Digital currency used to purchase rigs')
@@ -61,12 +62,19 @@ class Hacker:
     def get_trace_level(self):
         return self.__trace_level
 
+    def get_exposed_status(self):
+        return self.__exposed_status
+
     # Define Setters.
     def set_rig(self, rig):
         self.__rig = rig
 
     def set_trace_level(self, trace_level: int):
         self.__trace_level = trace_level
+        if self.__trace_level >= Hacker.EXPOSED:
+            self.__exposed_status = True
+        else:
+            self.__exposed_status = False
 
     # Allows the hacker to purchase a rig at the expense of 1 crypto token.
     def aquire_rig(self, name):
@@ -129,12 +137,6 @@ class Hacker:
         # Request target name.
         target_name = input('Enter a target name to launch Data Spike attack at: \n')
 
-        new_trace_level = self.get_trace_level() + 1
-        self.set_trace_level(new_trace_level)
-        if new_trace_level >= Hacker.EXPOSED:
-            print('You have been exposed. you cannot complete an extraction')
-            return
-
         # Validation of target input.
         target_hacker = None
         for hacker in Hacker.hacker_list:
@@ -169,6 +171,13 @@ class Hacker:
 
                 print(f'{target_hacker.get_name()} was hit and {reduced_damage} damage was caused.')
                 print('-------\n')
+
+                new_trace_level = self.get_trace_level() + 1
+                self.set_trace_level(new_trace_level)
+                if new_trace_level >= Hacker.EXPOSED:
+                    print('You have now been exposed. you can no longer launch attacks!')
+                    print('-------\n')
+                    return
 
                 # Check to see if rig is 'broken'.
                 target_rig.broken_status_check()
@@ -434,6 +443,8 @@ class Hacker:
         selected_asset = None
         if len(asset_to_decrypt) != 5:
             print('invalid UUID. Encryption Cancelled!!')
+            print('---------/n')
+            return
         else:
             for owner, asset in all_secured_assets:
                 if asset_to_decrypt in asset.get_name():
@@ -459,11 +470,13 @@ class Hacker:
             self.get_rig().set_upgrade_level(max_level)
             print('\nYou are at MAX LEVEL!!')
             print('You cannot upgrade you rig any further.\n')
+            return
 
         if self.get_rig().get_broken() is True:
             print('\nYour Rig is Broken!\n')
             print('You cannot upgrade while broken!')
             print('-------\n')
+            return
 
         # Check for hardware patches.
         hardware_patches = []
@@ -474,6 +487,7 @@ class Hacker:
         if not hardware_patches:
             print('You have no Hardware Patches in your inventory!')
             print('-------\n')
+            return
         else:
             # If hardware patch exists, check if user wants to continue upgrade.
             print(f'You have {len(hardware_patches)} Hardware Patches in your inventory!')
