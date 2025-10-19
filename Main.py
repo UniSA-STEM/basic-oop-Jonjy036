@@ -6,32 +6,105 @@ ID: 110484756
 Username: JONJY036
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
-from Hacker import Hacker
-from Rig import Rig
-from Asset import Asset
 
-hacker = Hacker('Joe')
+from test_functions import *
 
-hacker.aquire_rig('Beast')
-token1 = Asset('Crypto Token', 'A token used to aquire or repair rigs')
-chip1 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-chip2 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
-chip3 = Asset('Security Chip', 'a chip used to encrypt/decrypt assets')
+# Create Hacker 1 and print __str__.
+hacker1 = Hacker('Joe')
+print(hacker1)
 
-hacker.get_inventory().append(token1)
-hacker.get_inventory().append(chip1)
-hacker.get_inventory().append(chip2)
-hacker.get_rig().get_storage().append(chip3)
+# Create Hacker 1 and print __str__.
+hacker2 = Hacker('j')
+print(hacker2)
 
-print(hacker)
-print(hacker.get_rig())
+# Both hackers Aquire rigs.
+hacker1.aquire_rig('Beast')
+hacker2.aquire_rig('Destroyer')
 
-hacker.encrypt_asset()
+spike1 = Asset('Data Spike', 'A digital item used in battles')
+spike2 = Asset('Data Spike', 'A digital item used in battles')
+spike3 = Asset('Data Spike', 'A digital item used in battles')
+patch1 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+patch2 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+patch3 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+patch4 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+patch5 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
+patch6 = Asset('Hardware Patch', 'A patch used to upgrade rigs')
 
-print(hacker)
-print(hacker.get_rig())
+hacker1.get_rig().get_storage().append(spike1)
+hacker1.get_rig().get_storage().append(spike2)
+hacker1.get_rig().get_storage().append(spike3)
+hacker2.get_inventory().append(patch1)
+hacker2.get_inventory().append(patch2)
 
-hacker.decrypt_asset()
+# Check hacker2 base level rig info.
+print(hacker2.get_rig())
 
-print(hacker)
-print(hacker.get_rig())
+#Hacker 1 finds available targets.
+hacker1.find_target()
+
+# Hacker 1 launches initial strikes.
+hacker1.launch_data_spike()
+hacker1.launch_data_spike()
+
+# Check hacker 2 rig damage level.
+print(hacker2.get_rig())
+
+# Upgrade rig and check details.
+hacker2.upgrade_rig()
+hacker2.upgrade_rig()
+print(hacker2.get_rig())
+
+hacker1.launch_data_spike()
+hacker1.launch_data_spike()
+
+print(hacker2.get_rig())
+
+# Try to upgade (Broken Rig).
+hacker2.upgrade_rig()
+
+# Repair without a token.
+rig = hacker2.get_rig()
+rig.repair_rig(hacker2)
+print(hacker2.get_rig())
+
+# Add token and repair.
+token1 = Asset('Crypto Token', 'Digital currency used to purchase rigs')
+hacker2.get_inventory().append(token1)
+
+hacker2.get_inventory().append(patch3)
+hacker2.get_inventory().append(patch4)
+
+rig = hacker2.get_rig()
+rig.repair_rig(hacker2)
+print(hacker2.get_rig())
+
+# Increase to max upgrade level. (not enough patches)
+hacker2.upgrade_rig()
+hacker2.upgrade_rig()
+hacker2.upgrade_rig()
+print(hacker2.get_rig())
+
+hacker2.get_inventory().append(patch5)
+hacker2.get_inventory().append(patch6)
+
+# Increase to max upgrade level
+hacker2.upgrade_rig()
+print(hacker2.get_rig())
+
+# Launch Attack while exposed.
+hacker1.launch_data_spike()
+print(hacker1)
+
+hacker1.trace_reduction()
+
+hacker1.launch_data_spike()
+print(hacker2.get_rig())
+hacker2.upgrade_rig()
+
+# Attempt to upgrade beyond limit.
+hacker2.upgrade_rig()
+print(hacker2.get_rig())
+
+print(hacker2)
+print(hacker2.get_rig())
