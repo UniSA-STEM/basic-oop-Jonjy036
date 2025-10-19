@@ -175,6 +175,7 @@ class Hacker:
                 new_trace_level = self.get_trace_level() + 1
                 self.set_trace_level(new_trace_level)
                 if new_trace_level >= Hacker.EXPOSED:
+                    self.set_trace_level(new_trace_level)
                     print('You have now been exposed. you can no longer launch attacks!')
                     print('-------\n')
                     return
@@ -247,6 +248,7 @@ class Hacker:
             else:
                 print('There were no unsecured assets. You leave with nothing!')
         new_trace_level = self.get_trace_level() + 1
+        self.set_trace_level(new_trace_level)
         if new_trace_level >= Hacker.EXPOSED:
             print('You have now been exposed.')
             print('-------\n')
